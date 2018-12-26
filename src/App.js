@@ -1,27 +1,103 @@
-import React from 'react';
+//https://coreui.io/react/demo/#/base/navs
 
-//import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import './App.css';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import classnames from 'classnames';
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div>
+          <Boton_desplegable/>
+        </div> 
+        <div>
+          <Example/>
+        </div>
+      </div>
+    );
+  }
+}
+
+
+export default class Example extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      activeTab: '1'
+    };
+  }
+
+  toggle(tab) {
+    if (this.state.activeTab !== tab) {
+      this.setState({
+        activeTab: tab
+      });
+    }
+  }
+  render() {
+    return (
+      <div>
+        <Nav tabs>
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '1' })}
+              onClick={() => { this.toggle('1'); }}
+            >
+              Sticker Comun
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '2' })}
+              onClick={() => { this.toggle('2'); }}
+            >
+              Sticker solo
+            </NavLink>
+          </NavItem>
+
+          <NavItem>
+            <NavLink
+              className={classnames({ active: this.state.activeTab === '3' })}
+              onClick={() => { this.toggle('3'); }}
+            >
+              Sticker doble
+            </NavLink>
+          </NavItem>
+
+        </Nav>
+        <TabContent activeTab={this.state.activeTab}>
+
+          <TabPane tabId="1">
+            <Row>
+              <Col sm="12">
+                <h4>Tab 1 Contents</h4>
+              </Col>
+            </Row>
+          </TabPane>
+
+          <TabPane tabId="2">
+          <Row>
+              <Col sm="12">
+                <h4>Tab 2 Contents</h4>
+              </Col>
+            </Row>
+          </TabPane>
+
+          <TabPane tabId="3">
+          <Row>
+              <Col sm="12">
+                <h4>Tab 3 Contents</h4>
+              </Col>
+            </Row>
+          </TabPane>
+
+        </TabContent>
       </div>
     );
   }
@@ -29,36 +105,46 @@ class App extends React.Component {
 
 
 
-/*
+class Boton_desplegable extends React.Component {
+  constructor(props) {
+    super(props);
 
-class Comida extends React.Component {
-    
-    state = { like:  Boolean(this.props.like) };
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      dropdownOpen: false
+    };
+  }
 
-    handleLike(){
-        this.setState({like: !this.state.like})
-    }
-    render() {
-        return (
-            <div className="comida">
-                <h1 className="bg-success">{this.props.nombre}</h1>
-                <p className="bg-info">
-                    Posición: <i>{this.props.children}</i>
-                </p>
-                <div>
-                    <input type="checkbox" className=""  //glyphicon glyphicon-heart heart
-                    onChange={this.handleLike} 
-                    defaultChecked={this.state.like}/>
-                    <br />
-                    Like: {String(this.state.like)}
-                </div>
-            </div>
-            )
-    }
-};
-*/
+  toggle() {
+    this.setState(prevState => ({
+      dropdownOpen: !prevState.dropdownOpen
+    }));
+  }
 
+  render() {
+    return (
+      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <DropdownToggle caret>
+          Dropdown
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem header>Opciones</DropdownItem>
+          <DropdownItem>Some Action</DropdownItem>
+          
+        </DropdownMenu>
+      </Dropdown>
+    );
+  }
+  /*
+          <DropdownItem disabled>Action (disabled)</DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem>Foo Action</DropdownItem>
+          <DropdownItem>Bar Action</DropdownItem>
+          <DropdownItem>Quo Action</DropdownItem>
+  */
+}
 
+//--------------------------------------------------------------------------------------------------
 
 class Comida extends React.Component {
   constructor(props) {
@@ -135,9 +221,4 @@ class ListaComida extends React.Component {
   }
 };
 
-export default ListaComida;
-//export default App;
-//module.export = ListaComida;
-
-//ReactDOM.render(<ListaComida />, document.getElementById('root'));
-//ReactDOM.render(<ListaComida/>, document.getElementById('container'));
+export { ListaComida, App }
