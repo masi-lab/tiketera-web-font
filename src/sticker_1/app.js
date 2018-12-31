@@ -1,13 +1,18 @@
 
 import React from 'react';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import {Button, Input } from 'reactstrap';
+
+import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
 
 import './app.css';
+
+
 
 class Sticker_1 extends React.Component {
   constructor(props) {
     super(props);
-
+ 
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false
@@ -23,8 +28,16 @@ class Sticker_1 extends React.Component {
   render() {
     return (
       <div>
-        <Boton_desplegable/>
-        <Lista_sticker/>
+        <InputGroup className="boton_cabecera">
+          <Boton_desplegable />
+          <Input placeholder="buscar" />
+          <Button addonType="append">X</Button>
+      </InputGroup>
+
+          
+        <div>
+          <Lista_sticker/>
+        </div>
       </div>
 
     );
