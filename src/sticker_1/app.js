@@ -1,9 +1,18 @@
 
 import React from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import {Button, Input } from 'reactstrap';
 
-import { InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import DirectionsIcon from '@material-ui/icons/Directions';
+
+//app bar
+import SearchAppBar from './app_bar.js'
 
 import './app.css';
 
@@ -28,14 +37,10 @@ class Sticker_1 extends React.Component {
   render() {
     return (
       <div>
-        <InputGroup className="boton_cabecera">
-          <Boton_desplegable />
-          <Input placeholder="buscar" />
-          <Button addonType="append">X</Button>
-      </InputGroup>
-
-          
-        <div>
+        <div className="div_1">
+          <CustomizedInputBase/>
+        </div>
+        <div className="">
           <Lista_sticker/>
         </div>
       </div>
@@ -44,45 +49,27 @@ class Sticker_1 extends React.Component {
   }
 }
 
-
-class Boton_desplegable extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.toggle = this.toggle.bind(this);
-    this.state = {
-      dropdownOpen: false
-    };
-  }
-
-  toggle() {
-    this.setState(prevState => ({
-      dropdownOpen: !prevState.dropdownOpen
-    }));
-  }
+class CustomizedInputBase extends React.Component {
 
   render() {
-    return (
-      <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle caret>
-          Dropdown
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem header>Opciones</DropdownItem>
-          <DropdownItem>Some Action</DropdownItem>
-          
-        </DropdownMenu>
-      </Dropdown>
-    );
-  }
-  /*
-          <DropdownItem disabled>Action (disabled)</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>Foo Action</DropdownItem>
-          <DropdownItem>Bar Action</DropdownItem>
-          <DropdownItem>Quo Action</DropdownItem>
-  */
-}
+    return(
+    <Paper className={"root"} elevation={1}>
+      <IconButton className={"iconButton"} aria-label="Menu">
+        <MenuIcon width="100" />
+      </IconButton>
+      <InputBase className={"input"} style={{width:'80%'}} placeholder="Buscar ..." />
+      <IconButton className={"iconButton"} aria-label="Search">
+        <SearchIcon />
+      </IconButton>
+      <SearchAppBar/>
+      
+      <IconButton color="primary" className={"iconButton"} aria-label="Directions">
+        <DirectionsIcon />
+      </IconButton>
+    </Paper>
+  )};
+}//<Divider className={"divider"} />
+
 
 class Tarjeta extends React.Component {
   constructor(props) {
