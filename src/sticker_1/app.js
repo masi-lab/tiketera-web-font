@@ -1,15 +1,8 @@
 
 import React from 'react';
 
-import PropTypes from 'prop-types';
+
 import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import DirectionsIcon from '@material-ui/icons/Directions';
 
 //app bar
 import App_bar from './app_bar.js'
@@ -39,7 +32,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     this.state = {
       dropdownOpen: false
     };
-    console.log( props.theme);
+    //console.log( props.theme);
   }
 
   toggle() {
@@ -59,8 +52,8 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
           <Lista_sticker/>
         </div>
 
-        <Tooltip title="Add" aria-label="Add" className={'color_rojo'}>
-          <Fab color="secondary" className={this.props.classes.absolute}>
+        <Tooltip title="Add" aria-label="Add" className={''}>
+          <Fab /* color="secondary" */ className={this.props.classes.absolute}>
             <AddIcon />
           </Fab>
         </Tooltip>
