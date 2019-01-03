@@ -21,8 +21,23 @@
 .iconButton {
   padding: 10;
 }
-.divider {
-  width: 1;
-  height: 28;
-  margin: 4;
+.app_bar_div {
+  padding: '50px';
+  margin: '50px';
+}
+
+.color_rojo{
+  background-color: red;
+}
+
+
+
+
+
+
+.absolute_agregar {
+  position: 'absolute';
+  bottom: 8;
+  right: 8;
+  background-color: blue;
 }

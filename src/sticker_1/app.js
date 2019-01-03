@@ -12,13 +12,26 @@ import SearchIcon from '@material-ui/icons/Search';
 import DirectionsIcon from '@material-ui/icons/Directions';
 
 //app bar
-import SearchAppBar from './app_bar.js'
+import App_bar from './app_bar.js'
+import { withTheme } from '@material-ui/core/styles';
+
+
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import './app.css';
 
+const styles = theme => ({
+  absolute: {
+    position: 'absolute',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 3,
+  },
+});
 
 
-class Sticker_1 extends React.Component {
+const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component {
   constructor(props) {
     super(props);
  
@@ -26,6 +39,7 @@ class Sticker_1 extends React.Component {
     this.state = {
       dropdownOpen: false
     };
+    console.log( props.theme);
   }
 
   toggle() {
@@ -35,6 +49,7 @@ class Sticker_1 extends React.Component {
   }
 
   render() {
+    //console.log(this.props.theme);
     return (
       <div>
         <div className="div_1">
@@ -43,32 +58,27 @@ class Sticker_1 extends React.Component {
         <div className="">
           <Lista_sticker/>
         </div>
+
+        <Tooltip title="Add" aria-label="Add" className={'color_rojo'}>
+          <Fab color="secondary" className={this.props.classes.absolute}>
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </div>
 
     );
   }
-}
+}));
+
+
 
 class CustomizedInputBase extends React.Component {
 
   render() {
     return(
-    <Paper className={"root"} elevation={1}>
-      <IconButton className={"iconButton"} aria-label="Menu">
-        <MenuIcon width="100" />
-      </IconButton>
-      <InputBase className={"input"} style={{width:'80%'}} placeholder="Buscar ..." />
-      <IconButton className={"iconButton"} aria-label="Search">
-        <SearchIcon />
-      </IconButton>
-      <SearchAppBar/>
-      
-      <IconButton color="primary" className={"iconButton"} aria-label="Directions">
-        <DirectionsIcon />
-      </IconButton>
-    </Paper>
+      <App_bar/>
   )};
-}//<Divider className={"divider"} />
+}
 
 
 class Tarjeta extends React.Component {

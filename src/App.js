@@ -7,6 +7,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, Ca
 import classnames from 'classnames';
 import Sticker_1 from './sticker_1/app';
 
+
 class App extends React.Component {
   render() {
     return (
@@ -41,60 +42,60 @@ export default class Example extends React.Component {
   render() {
     return (
       <div>
-        <Nav tabs>
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '1' })}
-              onClick={() => { this.toggle('1'); }}
-            >
-              Sticker Comun
-            </NavLink>
-          </NavItem>
+          <Nav tabs>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '1' })}
+                onClick={() => { this.toggle('1'); }}
+              >
+                Sticker Comun
+              </NavLink>
+            </NavItem>
 
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '2' })}
-              onClick={() => { this.toggle('2'); }}
-            >
-              Sticker solo
-            </NavLink>
-          </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '2' })}
+                onClick={() => { this.toggle('2'); }}
+              >
+                Sticker solo
+              </NavLink>
+            </NavItem>
 
-          <NavItem>
-            <NavLink
-              className={classnames({ active: this.state.activeTab === '3' })}
-              onClick={() => { this.toggle('3'); }}
-            >
-              Sticker doble
-            </NavLink>
-          </NavItem>
+            <NavItem>
+              <NavLink
+                className={classnames({ active: this.state.activeTab === '3' })}
+                onClick={() => { this.toggle('3'); }}
+              >
+                Sticker doble
+              </NavLink>
+            </NavItem>
 
-        </Nav>
-        <TabContent activeTab={this.state.activeTab}>
+          </Nav>
+          <TabContent activeTab={this.state.activeTab}>
 
-          <TabPane tabId="1">
-              <div>
-                <Sticker_1/>
-              </div> 
-          </TabPane>
+            <TabPane tabId="1">
+                <div>
+                  <Sticker_1/>
+                </div> 
+            </TabPane>
 
-          <TabPane tabId="2">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 2 Contents</h4>
-              </Col>
-            </Row>
-          </TabPane>
+            <TabPane tabId="2">
+              <Row>
+                <Col sm="12">
+                  <h4>Tab 2 Contents</h4>
+                </Col>
+              </Row>
+            </TabPane>
 
-          <TabPane tabId="3">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 3 Contents</h4>
-              </Col>
-            </Row>
-          </TabPane>
+            <TabPane tabId="3">
+              <Row>
+                <Col sm="12">
+                  <h4>Tab 3 Contents</h4>
+                </Col>
+              </Row>
+            </TabPane>
 
-        </TabContent>
+          </TabContent>
       </div>
     );
   }
