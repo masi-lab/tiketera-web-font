@@ -35,38 +35,26 @@ const App_bar = withTheme()(withStyles(styles_App_bar) (class extends React.Comp
     super(props);
   }
 
+  inputEl = React.createRef();
+
   state = {
-    anchorEl: null,
+    hola: React.createElement(TextField, {id:"standard-bare",
+                                          className:this.props.classes.textField,
+                                          defaultValue:"",
+                                          margin:"normal",
+                                          inputRef: e => this.algo = e,
+                                          placeholder:"buscar"  }),
+    valor:'',
   };
 
-  handleClick = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  handleClick_cancel = event => {
+    //console.log(this.state.hola);
+    //console.log(this.inputEl);
+    //console.log(this.algo.value);
+    //console.log(this.state.hola.ref.current);
+    this.inputEl.value = '';
   };
-
-  handleClose = () => {
-    this.setState({ anchorEl: null });
-  };
-
-/* MENU
-            <Button
-              aria-owns={anchorEl ? 'simple-menu' : undefined}
-              aria-haspopup="true"
-              onClick={this.handleClick} >
-              Menu
-            </Button>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={this.handleClose}>
-              <MenuItem onClick={this.handleClose}>Agregar</MenuItem>
-              <MenuItem onClick={this.handleClose}>My account</MenuItem>
-              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
-            </Menu>
-*/
-
   render() {
-    const { anchorEl } = this.state;
 
     return (
       <div style={{height:'50px'}}>
@@ -78,22 +66,23 @@ const App_bar = withTheme()(withStyles(styles_App_bar) (class extends React.Comp
                 <Search  className={this.props.classes.icon_search}/>
               </Fab>
             </Tooltip>
-            
           </Grid>
 
-            <Grid item xs>
-              <TextField
-                id="standard-bare"
-                className={this.props.classes.textField}
-                defaultValue=""
-                margin="normal"
-                placeholder="buscar"
-              />
-            </Grid>
+          <Grid item xs>
+            <TextField
+              id="standard-bare"
+              className={this.props.classes.textField}
+              defaultValue="hola mundo"
+              margin="normal"
+              placeholder="buscar"
+              inputRef={e => this.inputEl = e}
+            />
+            {/*this.state.hola*/}
+          </Grid>
 
           <Grid item>
             <Tooltip title="Cancel" aria-label="Cancel" >
-                <Fab size="small">
+                <Fab size="small" onClick={this.handleClick_cancel} >
                   <Cancel className={this.props.classes.icon_cancel} />
                 </Fab>
             </Tooltip>

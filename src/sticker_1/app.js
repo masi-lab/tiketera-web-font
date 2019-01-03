@@ -113,7 +113,7 @@ class Lista_sticker extends React.Component {
 
   constructor(props) {
     super(props)
-    this.fetchAsync();
+    //this.fetchAsync();
   };
 
   async fetchAsync() {

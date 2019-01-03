@@ -82,6 +82,7 @@ export default class Example extends React.Component {
             <TabPane tabId="2">
               <Row>
                 <Col sm="12">
+                  <Sticker_1/>
                   <h4>Tab 2 Contents</h4>
                 </Col>
               </Row>
