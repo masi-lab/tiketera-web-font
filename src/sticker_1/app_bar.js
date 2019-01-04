@@ -2,12 +2,8 @@ import React from 'react';
 
 import './app.css';
 
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import { withTheme, withStyles } from '@material-ui/core/styles';
 import {Cancel, Search} from '@material-ui/icons';
@@ -31,29 +27,20 @@ const styles_App_bar = theme => ({
 
 
 const App_bar = withTheme()(withStyles(styles_App_bar) (class extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   inputEl = React.createRef();
 
   state = {
-    hola: React.createElement(TextField, {id:"standard-bare",
-                                          className:this.props.classes.textField,
-                                          defaultValue:"",
-                                          margin:"normal",
-                                          inputRef: e => this.algo = e,
-                                          placeholder:"buscar"  }),
-    valor:'',
+    
   };
 
   handleClick_cancel = event => {
-    //console.log(this.state.hola);
-    //console.log(this.inputEl);
-    //console.log(this.algo.value);
-    //console.log(this.state.hola.ref.current);
     this.inputEl.value = '';
   };
+
+  handleClick_search = event => {
+    this.props.buscar(event, this.inputEl.value);
+  };
+
   render() {
 
     return (
@@ -62,7 +49,7 @@ const App_bar = withTheme()(withStyles(styles_App_bar) (class extends React.Comp
 
           <Grid item>
             <Tooltip title="Search" aria-label="Search" className={''}>
-              <Fab size="small">
+              <Fab size="small" onClick={this.handleClick_search}>
                 <Search  className={this.props.classes.icon_search}/>
               </Fab>
             </Tooltip>
@@ -70,14 +57,13 @@ const App_bar = withTheme()(withStyles(styles_App_bar) (class extends React.Comp
 
           <Grid item xs>
             <TextField
-              id="standard-bare"
+              id=""
               className={this.props.classes.textField}
-              defaultValue="hola mundo"
+              defaultValue=""
               margin="normal"
               placeholder="buscar"
               inputRef={e => this.inputEl = e}
             />
-            {/*this.state.hola*/}
           </Grid>
 
           <Grid item>

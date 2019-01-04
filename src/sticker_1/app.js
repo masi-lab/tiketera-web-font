@@ -27,12 +27,14 @@ const styles = theme => ({
 const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component {
   constructor(props) {
     super(props);
- 
+    
     this.toggle = this.toggle.bind(this);
     this.state = {
       dropdownOpen: false
     };
     //console.log( props.theme);
+
+    this.lista_sticker = React.createRef();
   }
 
   toggle() {
@@ -41,18 +43,29 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     }));
   }
 
+
+  buscar = async (event, text_value) =>{
+    //console.log(event);
+    //console.log(text_value);
+    //console.log(this.lista_sticker.current.fetchAsync);
+    this.lista_sticker.current.fetchAsync(text_value);
+  }
+
+  
   render() {
     //console.log(this.props.theme);
     return (
       <div>
         <div className="div_1">
-          <CustomizedInputBase/>
-        </div>
-        <div className="">
-          <Lista_sticker/>
+          <App_bar 
+            buscar = {this.buscar} >
+          </App_bar>
+        </div> 
+        <div className="" >
+          <Lista_sticker ref={this.lista_sticker} />
         </div>
 
-        <Tooltip title="Add" aria-label="Add" className={''}>
+        <Tooltip title="Add" aria-label="Add" className={''} >
           <Fab /* color="secondary" */ className={this.props.classes.absolute}>
             <AddIcon />
           </Fab>
@@ -62,16 +75,6 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     );
   }
 }));
-
-
-
-class CustomizedInputBase extends React.Component {
-
-  render() {
-    return(
-      <App_bar/>
-  )};
-}
 
 
 class Tarjeta extends React.Component {
@@ -102,23 +105,18 @@ class Tarjeta extends React.Component {
 };
 
 class Lista_sticker extends React.Component {
+  constructor(props) {
+    super(props)
+    this.fetchAsync();
+  };
+
   state = {
-    comidas: [
-      'Tacos',
-      'Paella',
-      'Ceviche'
-    ],
     data: []
   };
 
-  constructor(props) {
-    super(props)
-    //this.fetchAsync();
-  };
-
-  async fetchAsync() {
+  async fetchAsync(codigo='', descripcion='') {
     // await response of fetch call
-    let response = await fetch('http://localhost:8080/api/sticker/find?');
+    let response = await fetch(`http://localhost:8080/api/sticker/find?codigo=${codigo}&descripcion=${descripcion}`);
     // only proceed once promise is resolved
     //console.log(response);
     let data = await response.json();
@@ -135,7 +133,7 @@ class Lista_sticker extends React.Component {
       <div>
         {
           this.state.data.map(function (tike, i) {
-            console.log(tike, i);
+            //console.log(tike, i);
             return (
               <Tarjeta key={i}
                 nombre={tike.codigo}
