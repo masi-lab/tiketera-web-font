@@ -13,6 +13,13 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import {Card, CardHeader, CardMedia, CardContent, CardActions} from '@material-ui/core';
+import Typography from '@material-ui/core/Typography';
+import {IconButton} from '@material-ui/core';
+
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+
 import './app.css';
 
 const styles = theme => ({
@@ -20,6 +27,16 @@ const styles = theme => ({
     position: 'absolute',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 3,
+  },
+  root_styles: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+  },
+  gridList: {
+    width: 500,
+    height: 450,
   },
 });
 
@@ -62,7 +79,11 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
           </App_bar>
         </div> 
         <div className="" >
-          <Lista_sticker ref={this.lista_sticker} />
+          <div className={this.props.classes.root_styles}>
+            <GridList cellHeight={200} spacing={1} >
+              <Lista_sticker ref={this.lista_sticker} />
+            </GridList>
+          </div>
         </div>
 
         <Tooltip title="Add" aria-label="Add" className={''} >
@@ -77,7 +98,13 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
 }));
 
 
-class Tarjeta extends React.Component {
+const styles_Tarjeta = theme => ({
+  card: {
+    maxWidth: 200,
+  },
+});
+
+const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Component {
   constructor(props) {
     super(props)
     this.state = { like: Boolean(this.props.like) };
@@ -91,20 +118,36 @@ class Tarjeta extends React.Component {
   }
   render() {
     return (
-      <div className="comida">
-        <h1 className="bg-success">{this.props.nombre}</h1>
-        <p className="bg-info">
-         <i>{this.props.descripcion}</i>
-        </p>
-        <div>
-          <br />
-        </div>
-      </div>
+        <Card className={this.props.classes.card}>
+          <CardHeader
+            title={this.props.nombre}
+          />
+          <CardContent>
+            <Typography component="p">
+             {this.props.descripcion}
+            </Typography>
+          </CardContent>
+          
+          <CardActions disableActionSpacing>
+            <IconButton aria-label="Editar">
+              
+            </IconButton>
+            <IconButton aria-label="Borrar">
+              
+            </IconButton>
+          </CardActions>
+
+        </Card>
     )
   }
-};
+}));
 
-class Lista_sticker extends React.Component {
+const styles_Lista_sticker = theme => ({
+ 
+
+});
+
+const Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends React.Component {
   constructor(props) {
     super(props)
     this.fetchAsync();
@@ -164,17 +207,19 @@ class Lista_sticker extends React.Component {
           this.state.data.map(function (tike, i) {
             //console.log(tike, i);
             return (
-              <Tarjeta key={i}
-                nombre={tike.codigo}
-                descripcion={tike.descripcion}>
-              </Tarjeta>
+              <GridListTile  key={i} > 
+                <Tarjeta 
+                  nombre={tike.codigo}
+                  descripcion={tike.descripcion}>
+                </Tarjeta>
+              </GridListTile>
             )
           })
         }
       </div>
     </div>)
   }
-};
+}));
 
 
 export default Sticker_1;
