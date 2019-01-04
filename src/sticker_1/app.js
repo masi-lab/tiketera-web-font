@@ -114,14 +114,43 @@ class Lista_sticker extends React.Component {
     data: []
   };
 
-  async fetchAsync(codigo='', descripcion='') {
-    // await response of fetch call
-    let response = await fetch(`http://localhost:8080/api/sticker/find?codigo=${codigo}&descripcion=${descripcion}`);
-    // only proceed once promise is resolved
-    //console.log(response);
-    let data = await response.json();
+  async fetchAsync(text_value='') {
+    let codigo = '';
+    let descripcion = '';
+    let final = [];
+    
+    if(text_value===''){
+      let response = await fetch(`http://localhost:8080/api/sticker/find?`);
+      let data = await response.json();
+      final = data.data;
+      //console.log(final);
+    }else{
 
-    this.setState({ data: data.data })
+      codigo = text_value;
+      descripcion = '';
+      // await response of fetch call
+      let response = await fetch(`http://localhost:8080/api/sticker/find?codigo=${codigo}&descripcion=${descripcion}`);
+      // only proceed once promise is resolved
+      //console.log(response);
+      let data = await response.json();
+      final = data.data;
+
+      codigo = '';
+      descripcion = text_value;
+      let response2 = await fetch(`http://localhost:8080/api/sticker/find?codigo=${codigo}&descripcion=${descripcion}`);
+      let data2 = await response2.json();
+      let var_control = false;
+
+      data2.data.map(function (tike, i) {
+        var_control = false;
+        final.map(function(item,x){
+          if(tike._id === item._id){var_control=true;}
+        })
+        if(!var_control){final.push(tike);}
+      });
+    }
+
+    this.setState({ data: final })
   }
 
   render() {
