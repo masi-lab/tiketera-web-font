@@ -17,10 +17,10 @@ import {Card, CardHeader, CardMedia, CardContent, CardActions} from '@material-u
 import Typography from '@material-ui/core/Typography';
 import {IconButton} from '@material-ui/core';
 
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
+import Grid from '@material-ui/core/Grid';
 
 import './app.css';
+import { CenterFocusStrong } from '@material-ui/icons';
 
 const styles = theme => ({
   absolute: {
@@ -31,8 +31,9 @@ const styles = theme => ({
   root_styles: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    //justifyContent: 'space-around',
     overflow: 'hidden',
+    
   },
   gridList: {
     width: 500,
@@ -80,9 +81,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
         </div> 
         <div className="" >
           <div className={this.props.classes.root_styles}>
-            <GridList cellHeight={200} spacing={1} >
               <Lista_sticker ref={this.lista_sticker} />
-            </GridList>
           </div>
         </div>
 
@@ -143,7 +142,13 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
 }));
 
 const styles_Lista_sticker = theme => ({
- 
+  root: {
+    flexGrow: 1,
+  },
+  grid:{
+    minWidth: 150,
+    maxWidth: 200,
+  },
 
 });
 
@@ -197,25 +202,27 @@ const Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  exten
   }
 
   render() {
-    return (<div className="centerBlock">
+    return (<div className="centerBlockList">
       <header>
         <h1>Sticker 1</h1>
         <i>Total: {this.state.data.length}</i>
       </header>
-      <div>
-        {
-          this.state.data.map(function (tike, i) {
-            //console.log(tike, i);
-            return (
-              <GridListTile  key={i} > 
-                <Tarjeta 
-                  nombre={tike.codigo}
-                  descripcion={tike.descripcion}>
-                </Tarjeta>
-              </GridListTile>
-            )
-          })
-        }
+      <div className={this.props.classes.root}>
+        <Grid container spacing={16}  alignContent="center"> 
+          {
+            this.state.data.map((tike, i) => {
+              //console.log(tike, i);
+              return (
+                <Grid item xs={0} key={i} className={this.props.classes.grid}> 
+                  <Tarjeta 
+                    nombre={tike.codigo}
+                    descripcion={tike.descripcion}>
+                  </Tarjeta>
+                </Grid>
+              )
+            })
+          }
+        </Grid>
       </div>
     </div>)
   }
