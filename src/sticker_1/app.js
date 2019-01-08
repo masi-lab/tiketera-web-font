@@ -20,10 +20,14 @@ import {IconButton} from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 
 import './app.css';
-import { CenterFocusStrong } from '@material-ui/icons';
 
-import {blue, red, teal} from '@material-ui/core/colors';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+//Dialog
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle} from '@material-ui/core';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 
 const styles = theme => ({
@@ -57,7 +61,13 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     //console.log( props.theme);
 
     this.lista_sticker = React.createRef();
+    
+    this.state = {
+      open: false,
+    };
   }
+
+  
 
   toggle() {
     this.setState(prevState => ({
@@ -71,6 +81,49 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     //console.log(text_value);
     //console.log(this.lista_sticker);
     this.lista_sticker.fetchAsync(text_value);
+  }
+
+  handleClickOpen = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = () => {
+    this.setState({ open: false });
+  };
+
+  referencia_form= React.createRef();
+  agregar_nuevo_elemnto = (event) =>{
+    event.preventDefault()
+    //console.log(this.referencia_form.codigo.value);
+    this.handleClose();
+    this.fetchAsync_save(this.referencia_form)
+  }
+
+  searchParams = (params) => { return Object.keys(params).map((key) => {
+    return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+   }).join('&')};
+
+  fetchAsync_save = async (form) => {
+    let data_procesada = {'codigo':form.codigo.value, 'descripcion': form.descripcion.value}
+    //data_procesada = JSON.stringify(data_procesada);
+    
+    data_procesada = this.searchParams(data_procesada);
+    
+    //console.log(data_procesada);
+    
+    let response = await fetch(`http://localhost:8080/api/sticker/save`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+      },
+      body: data_procesada || null,
+    });
+    let status = response.status;
+    let data = await response.json();
+
+    console.log(status);
+    console.log(data);
+    
   }
 
   
@@ -89,11 +142,57 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
           </div>
         </div>
 
-        <Tooltip title="Add" aria-label="Add" className={''} >
+        <Tooltip title="Add" aria-label="Add" className={''}  onClick={this.handleClickOpen}>
           <Fab /* color="secondary" */ className={this.props.classes.absolute}>
             <AddIcon />
           </Fab>
         </Tooltip>
+
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+          fullWidth
+        >
+          <DialogTitle id="form-dialog-title">Agregar</DialogTitle>
+          <DialogContent>
+            <DialogContentText >
+              Agregar un nuevo elemento
+            </DialogContentText>
+            <form method="post" ref={e => this.referencia_form = e} onSubmit={this.agregar_nuevo_elemnto}>
+              <List >
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="codigo"
+                    label="codigo"
+                    type="text"
+                    fullWidth
+                  />
+                  </ListItem>
+                  <ListItem>
+                  <TextField
+                    margin="normal"
+                    id="descripcion"
+                    label="descripcion"
+                    type="text"
+                    fullWidth
+                  />
+                </ListItem>
+              </List>
+              <DialogActions>
+                <Button onClick={this.handleClose} color="primary">
+                  Cancelar
+                </Button>
+                <Button type="submit" color="primary" >
+                  Agregar
+                </Button>
+              </DialogActions>
+            </form>
+          </DialogContent>
+          
+        </Dialog>
       </div>
 
     );
