@@ -22,6 +22,10 @@ import Grid from '@material-ui/core/Grid';
 import './app.css';
 import { CenterFocusStrong } from '@material-ui/icons';
 
+import {blue, red, teal} from '@material-ui/core/colors';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+
 const styles = theme => ({
   absolute: {
     position: 'absolute',
@@ -62,11 +66,11 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
   }
 
 
-  buscar = async (event, text_value) =>{
+  buscar = async (event, text_value) => {
     //console.log(event);
     //console.log(text_value);
-    //console.log(this.lista_sticker.current.fetchAsync);
-    this.lista_sticker.current.fetchAsync(text_value);
+    //console.log(this.lista_sticker);
+    this.lista_sticker.fetchAsync(text_value);
   }
 
   
@@ -81,7 +85,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
         </div> 
         <div className="" >
           <div className={this.props.classes.root_styles}>
-              <Lista_sticker ref={this.lista_sticker} />
+              <Lista_sticker onRef={ref => (this.lista_sticker = ref)} />
           </div>
         </div>
 
@@ -100,8 +104,10 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
 const styles_Tarjeta = theme => ({
   card: {
     maxWidth: 200,
+    background: theme.palette.primary.main,//'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
   },
 });
+
 
 const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Component {
   constructor(props) {
@@ -117,13 +123,13 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
   }
   render() {
     return (
-        <Card className={this.props.classes.card}>
+        <Card className={this.props.classes.card}  >
           <CardHeader
             title={this.props.nombre}
           />
           <CardContent>
             <Typography component="p">
-             {this.props.descripcion}
+              {this.props.descripcion}
             </Typography>
           </CardContent>
           
@@ -149,20 +155,34 @@ const styles_Lista_sticker = theme => ({
     minWidth: 150,
     maxWidth: 200,
   },
+  centerBlockList:{
+    width: '100%',
+  },
+  grid_container:{
+    padding: '10px',
+  },
 
 });
 
-const Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends React.Component {
+let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends React.Component {
   constructor(props) {
     super(props)
     this.fetchAsync();
   };
 
+  componentDidMount() {
+    this.props.onRef(this);
+    //console.log(this.props);
+  }
+  componentWillUnmount() {
+    this.props.onRef(undefined)
+  }
+
   state = {
-    data: []
+    data: [],
   };
 
-  async fetchAsync(text_value='') {
+  fetchAsync = async (text_value='') => {
     let codigo = '';
     let descripcion = '';
     let final = [];
@@ -171,7 +191,7 @@ const Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  exten
       let response = await fetch(`http://localhost:8080/api/sticker/find?`);
       let data = await response.json();
       final = data.data;
-      //console.log(final);
+      
     }else{
 
       codigo = text_value;
@@ -198,22 +218,24 @@ const Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  exten
       });
     }
 
+    //console.log(final);
+
     this.setState({ data: final })
   }
 
   render() {
-    return (<div className="centerBlockList">
+    return (<div className= {this.props.classes.centerBlockList}>
       <header>
         <h1>Sticker 1</h1>
         <i>Total: {this.state.data.length}</i>
       </header>
       <div className={this.props.classes.root}>
-        <Grid container spacing={16}  alignContent="center"> 
+        <Grid container spacing={16}  alignContent="center" className={this.props.classes.grid_container}>  
           {
             this.state.data.map((tike, i) => {
               //console.log(tike, i);
               return (
-                <Grid item xs={0} key={i} className={this.props.classes.grid}> 
+                <Grid item xs={1} key={i} className={this.props.classes.grid}> 
                   <Tarjeta 
                     nombre={tike.codigo}
                     descripcion={tike.descripcion}>

@@ -7,16 +7,10 @@
   padding: 10px;
 }
 
-.centerBlockList{
-  width: 'auto';
-  
-}
-
 .root {
   padding: '2px 4px';
   display: 'flex';
   align-items: 'center';
-  /*width: 800;*/
 }
 .input {
   margin-left: 8;

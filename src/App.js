@@ -5,15 +5,26 @@ import './App.css';
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import Sticker_1 from './sticker_1/app';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import {blue, red, teal} from '@material-ui/core/colors';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: blue,
+    secondary: teal,
+    error: red,
+  },
+  typography: { useNextVariants: true },
+});
 
 
 class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div>
+         <MuiThemeProvider theme={theme}>
           <Example/>
-        </div>
+        </MuiThemeProvider>
       </div>
     );
   }
@@ -42,7 +53,7 @@ export default class Example extends React.Component {
     return (
       <div>
           <Nav tabs>
-            <NavItem>
+            <NavItem color='primary'>
               <NavLink
                 className={classnames({ active: this.state.activeTab === '1' })}
                 onClick={() => { this.toggle('1'); }}
