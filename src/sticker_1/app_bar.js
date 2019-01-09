@@ -44,7 +44,7 @@ const App_bar = withTheme()(withStyles(styles_App_bar) (class extends React.Comp
   render() {
 
     return (
-      <div style={{height:'50px'}}>
+      <div style={{height:'50px', padding:'10px'}}>
         <Grid container spacing={8} alignItems={'center'}>
 
           <Grid item>

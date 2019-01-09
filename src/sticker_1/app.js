@@ -29,10 +29,13 @@ import TextField from '@material-ui/core/TextField';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
+import Delete from '@material-ui/icons/Delete';
+import Edit from '@material-ui/icons/Edit';
+
 
 const styles = theme => ({
   absolute: {
-    position: 'absolute',
+    position: 'fixed',
     bottom: theme.spacing.unit * 2,
     right: theme.spacing.unit * 3,
   },
@@ -46,6 +49,9 @@ const styles = theme => ({
   gridList: {
     width: 500,
     height: 450,
+  },
+  div_principal:{
+    //position: 'relative',
   },
 });
 
@@ -123,14 +129,13 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
 
     console.log(status);
     console.log(data);
-    
   }
 
   
   render() {
     //console.log(this.props.theme);
     return (
-      <div>
+      <div className={this.props.classes.div_principal}>
         <div className="div_1">
           <App_bar 
             buscar = {this.buscar} >
@@ -142,8 +147,8 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
           </div>
         </div>
 
-        <Tooltip title="Add" aria-label="Add" className={''}  onClick={this.handleClickOpen}>
-          <Fab /* color="secondary" */ className={this.props.classes.absolute}>
+        <Tooltip title="Add" aria-label="Add" className={''}  onClick={this.handleClickOpen} className={this.props.classes.absolute}>
+          <Fab /* color="secondary" */ >
             <AddIcon />
           </Fab>
         </Tooltip>
@@ -185,7 +190,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                 <Button onClick={this.handleClose} color="primary">
                   Cancelar
                 </Button>
-                <Button type="submit" color="primary" >
+                <Button type="submit" color="primary">
                   Agregar
                 </Button>
               </DialogActions>
@@ -203,7 +208,13 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
 const styles_Tarjeta = theme => ({
   card: {
     maxWidth: 200,
-    background: theme.palette.primary.main,//'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    //background: theme.palette.primary.main,//'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+  },
+  CardActions:{
+    display: 'flex',
+    alignItems: 'center',
+    paddingLeft: theme.spacing.unit,
+    width:'100%',
   },
 });
 
@@ -232,13 +243,15 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
             </Typography>
           </CardContent>
           
-          <CardActions disableActionSpacing>
-            <IconButton aria-label="Editar">
-              
-            </IconButton>
-            <IconButton aria-label="Borrar">
-              
-            </IconButton>
+          <CardActions  >
+            <div className={this.props.classes.CardActions}>
+              <IconButton aria-label="Editar">
+                <Edit />
+              </IconButton>
+              <IconButton aria-label="Borrar">
+                <Delete />
+              </IconButton>
+            </div>
           </CardActions>
 
         </Card>
@@ -248,7 +261,8 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
 
 const styles_Lista_sticker = theme => ({
   root: {
-    flexGrow: 1,
+    //flexGrow: 1,
+    overflow: 'hidden',
   },
   grid:{
     minWidth: 150,
@@ -259,6 +273,10 @@ const styles_Lista_sticker = theme => ({
   },
   grid_container:{
     padding: '10px',
+    //height: '400px',
+    display: 'flex',
+    flexWrap: 'wrap',
+    //overflow: 'auto',
   },
 
 });
@@ -329,7 +347,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
         <i>Total: {this.state.data.length}</i>
       </header>
       <div className={this.props.classes.root}>
-        <Grid container spacing={16}  alignContent="center" className={this.props.classes.grid_container}>  
+        <Grid  container spacing={16}  alignContent="center" className={this.props.classes.grid_container}>  
           {
             this.state.data.map((tike, i) => {
               //console.log(tike, i);
