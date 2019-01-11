@@ -226,11 +226,35 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     this.handleLike = this.handleLike.bind(this);
   };
 
+  componentDidMount() {
+    if(this.props.editar){
+      this.props.editar(this);
+    }
+    
+    //console.log(this.props);
+  }
+
+  componentWillUnmount() {
+    if(this.props.editar){
+      this.props.editar(undefined);
+    }
+  }
+
   handleLike(event) {
     this.setState({ like: !this.state.like })
     //console.log(event)
     //console.log(this.state)
   }
+
+
+  handleClick_Edit(event) {
+    //console.log(this.state)
+  }
+
+  handleClick_Delete(event) {
+    //console.log(this.state)
+  }
+
   render() {
     return (
         <Card className={this.props.classes.card}  >
@@ -245,10 +269,10 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
           
           <CardActions  >
             <div className={this.props.classes.CardActions}>
-              <IconButton aria-label="Editar">
+              <IconButton aria-label="Editar" onClick={this.handleClick_Edit}>
                 <Edit />
               </IconButton>
-              <IconButton aria-label="Borrar">
+              <IconButton aria-label="Borrar" onClick={this.handleClick_Delete}>
                 <Delete />
               </IconButton>
             </div>
@@ -340,6 +364,8 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
     this.setState({ data: final })
   }
 
+  editar = (algo)=>{console.log(algo)}
+
   render() {
     return (<div className= {this.props.classes.centerBlockList}>
       <header>
@@ -354,6 +380,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
               return (
                 <Grid item xs={1} key={i} className={this.props.classes.grid}> 
                   <Tarjeta 
+                    editar={this.editar('probando')}
                     nombre={tike.codigo}
                     descripcion={tike.descripcion}>
                   </Tarjeta>
