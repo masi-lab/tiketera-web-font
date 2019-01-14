@@ -2,8 +2,6 @@
 
 import React from 'react';
 import './App.css';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
-import classnames from 'classnames';
 import Sticker_1 from './sticker_1/app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {blue, red, teal} from '@material-ui/core/colors';

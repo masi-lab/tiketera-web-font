@@ -13,13 +13,15 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import {Card, CardHeader, CardMedia, CardContent, CardActions} from '@material-ui/core';
+import {Card, CardHeader, CardContent, CardActions} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import {IconButton} from '@material-ui/core';
 
 import Grid from '@material-ui/core/Grid';
 
 import './app.css';
+
+import Dialogo from './dialogo.js';
 
 
 //Dialog
@@ -127,8 +129,19 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     let status = response.status;
     let data = await response.json();
 
-    console.log(status);
-    console.log(data);
+    if(status === 200 && (data.data.codigo || data.data.descripcion)){
+      this.dialogo.titulo = 'Agregar';
+      this.dialogo.mensaje = 'Se agrego un nuevo elemento con exito';
+      this.dialogo.handleClickOpen();
+      this.lista_sticker.fetchAsync();
+    }else{
+      this.dialogo.titulo = 'Error';
+      this.dialogo.mensaje = 'Error al agregar un nuevo elemento';
+      this.dialogo.handleClickOpen();
+      this.lista_sticker.fetchAsync();
+    }
+    //console.log(status);
+    //console.log(data);
   }
 
   
@@ -147,7 +160,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
           </div>
         </div>
 
-        <Tooltip title="Add" aria-label="Add" className={''}  onClick={this.handleClickOpen} className={this.props.classes.absolute}>
+        <Tooltip title="Add" aria-label="Add" onClick={this.handleClickOpen} className={this.props.classes.absolute}>
           <Fab /* color="secondary" */ >
             <AddIcon />
           </Fab>
@@ -196,10 +209,10 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
               </DialogActions>
             </form>
           </DialogContent>
-          
         </Dialog>
-      </div>
 
+        <Dialogo ref={e => this.dialogo = e} />
+      </div>
     );
   }
 }));
@@ -220,46 +233,130 @@ const styles_Tarjeta = theme => ({
 
 
 const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Component {
+  
   constructor(props) {
     super(props)
-    this.state = { like: Boolean(this.props.like) };
-    this.handleLike = this.handleLike.bind(this);
+    this.state = {
+      open_editar: false,
+      open_borrar: false,
+    };
+    //this.state = { like: Boolean(this.props.like) };
+    //this.handleLike = this.handleLike.bind(this);
+    //this.handleClick_Edit = this.handleClick_Edit.bind(this);
+    //this.handleClick_Delete = this.handleClick_Delete.bind(this);
   };
-
+  
+  /*  
   componentDidMount() {
     if(this.props.editar){
       this.props.editar(this);
     }
-    
-    //console.log(this.props);
+    console.log(this.props);
   }
 
   componentWillUnmount() {
     if(this.props.editar){
       this.props.editar(undefined);
     }
-  }
+  }*/
 
+  /*
   handleLike(event) {
     this.setState({ like: !this.state.like })
     //console.log(event)
     //console.log(this.state)
+  }*/
+
+  /*
+  //Forma de hacer funciones con opcionales
+  funcion_con_opcionales(requerido, {opcional1, opcional2 = 'hola', opcional, opcional3} = {}){
+    console.log(requerido);
+    console.log(opcional1);
+    console.log(opcional2);
+    console.log(opcional3);
+  }
+  
+
+  this.funcion_con_opcionales('requerido1', {opcional3:'hola mundo'});
+  */
+  handleClickOpenEditar = () => {
+    this.setState({ open_editar: true });
+  };
+  handleCloseEditar = () => {
+    this.setState({ open_editar: false });
+  };
+  handleClick_Edit = (event) => {
+    //console.log(this.state)
+    //console.log(this.props)
+    this.handleClickOpenEditar();
+  }
+  editar_elemnto = (event) =>{
+    event.preventDefault()
+    this.fetchAsync_edit(this.referencia_form_editar);
+    this.handleCloseEditar();
+  }
+  fetchAsync_edit = async (form) => {
+    let response = await fetch(`http://localhost:8080/api/sticker/update?codigo=${form.codigo.value}&descripcion=${form.descripcion.value}&_id=${this.props.id}`);
+    let status = response.status;
+    let data = await response.json();
+
+    //console.log(status);
+    //console.log(data.data.nModified);
+    if(status === 200 && data.data.nModified >= 1){
+      this.dialogo.titulo = 'Editar';
+      this.dialogo.mensaje = 'Se edito un elemento con exito';
+      this.dialogo.handleClickOpen();
+      this.props.lista_sticker.fetchAsync();
+    }else{
+      this.dialogo.titulo = 'Error';
+      this.dialogo.mensaje = 'Error al editar un elemento';
+      this.dialogo.handleClickOpen();
+      this.props.lista_sticker.fetchAsync();
+    }
   }
 
-
-  handleClick_Edit(event) {
-    //console.log(this.state)
+  handleClick_Delete = (event) => {
   }
+  handleClickOpenDelete = () => {
+    this.setState({ open_borrar: true });
+  };
+  handleCloseDelete = () => {
+    this.setState({ open_borrar: false });
+  };
+  handleClick_Delete = (event) => {
+    this.handleClickOpenDelete();
+  }
+  delete_elemnto = (event) =>{
+    event.preventDefault()
+    this.fetchAsync_delet(this.referencia_form_borrar);
+    this.handleCloseDelete();
+  }
+  fetchAsync_delet = async (form) => {
+    let response = await fetch(`http://localhost:8080/api/sticker/delete?_id=${this.props.id}`);
+    let status = response.status;
+    //let data = await response.json();
 
-  handleClick_Delete(event) {
-    //console.log(this.state)
+    //console.log(status);
+    //console.log(data);
+    if(status === 200){
+      this.dialogo.titulo = 'Eliminar';
+      this.dialogo.mensaje = 'Se elimino un elemento con exito';
+      this.dialogo.handleClickOpen();
+      this.props.lista_sticker.fetchAsync();
+    }else{
+      this.dialogo.titulo = 'Error';
+      this.dialogo.mensaje = 'Error al eliminar un elemento';
+      this.dialogo.handleClickOpen();
+      this.props.lista_sticker.fetchAsync();
+    }
   }
 
   render() {
     return (
+      <div>
         <Card className={this.props.classes.card}  >
           <CardHeader
-            title={this.props.nombre}
+            title={this.props.codigo}
           />
           <CardContent>
             <Typography component="p">
@@ -269,16 +366,103 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
           
           <CardActions  >
             <div className={this.props.classes.CardActions}>
-              <IconButton aria-label="Editar" onClick={this.handleClick_Edit}>
-                <Edit />
-              </IconButton>
               <IconButton aria-label="Borrar" onClick={this.handleClick_Delete}>
                 <Delete />
               </IconButton>
+              <IconButton aria-label="Editar" onClick={this.handleClick_Edit}>
+                <Edit />
+              </IconButton>
             </div>
           </CardActions>
-
         </Card>
+
+
+        <Dialog
+          open={this.state.open_editar}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+          fullWidth
+          >
+          <DialogTitle id="">Editar</DialogTitle>
+          <DialogContent>
+            <DialogContentText >
+              Editar un elemento
+            </DialogContentText>
+            <form method="post" ref={e => this.referencia_form_editar = e} onSubmit={this.editar_elemnto}>
+              <List >
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="codigo"
+                    label="codigo"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.codigo}
+                  />
+                  </ListItem>
+                  <ListItem>
+                  <TextField
+                    margin="normal"
+                    id="descripcion"
+                    label="descripcion"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.descripcion}
+                  />
+                </ListItem>
+              </List>
+              <DialogActions>
+                <Button onClick={this.handleCloseEditar} color="primary">
+                  Cancelar
+                </Button>
+                <Button type="submit" color="primary">
+                  Editar
+                </Button>
+              </DialogActions>
+            </form>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog
+          open={this.state.open_borrar}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+          fullWidth
+          >
+          <DialogTitle id="">Eliminar</DialogTitle>
+          <DialogContent>
+            <DialogContentText >
+              Eliminar un elemento
+            </DialogContentText>
+            <form method="post" ref={e => this.referencia_form_borrar = e} onSubmit={this.delete_elemnto}>
+              <List >
+                <ListItem >
+                  <label>
+                    {this.props.codigo}
+                  </label>
+                  </ListItem>
+                  <ListItem>
+                  <label>
+                    {this.props.descripcion}
+                  </label>
+                </ListItem>
+              </List>
+              <DialogActions>
+                <Button onClick={this.handleCloseDelete} color="primary">
+                  Cancelar
+                </Button>
+                <Button type="submit" color="primary">
+                  Eliminar
+                </Button>
+              </DialogActions>
+            </form>
+          </DialogContent>
+        </Dialog>
+
+
+        <Dialogo ref={e => this.dialogo = e} />
+      </div>
     )
   }
 }));
@@ -354,8 +538,10 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
         var_control = false;
         final.map(function(item,x){
           if(tike._id === item._id){var_control=true;}
+          return ''; // Esto lo pongo para no me tire un warning
         })
         if(!var_control){final.push(tike);}
+        return ''; // Esto lo pongo para no me tire un warning
       });
     }
 
@@ -364,7 +550,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
     this.setState({ data: final })
   }
 
-  editar = (algo)=>{console.log(algo)}
+  //editar = (algo)=>{console.log(algo)}
 
   render() {
     return (<div className= {this.props.classes.centerBlockList}>
@@ -380,9 +566,12 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
               return (
                 <Grid item xs={1} key={i} className={this.props.classes.grid}> 
                   <Tarjeta 
-                    editar={this.editar('probando')}
-                    nombre={tike.codigo}
-                    descripcion={tike.descripcion}>
+                    //editar={this.editar('probando')}
+                    codigo={tike.codigo}
+                    descripcion={tike.descripcion}
+                    id={tike._id}
+                    lista_sticker={this}
+                  >
                   </Tarjeta>
                 </Grid>
               )
