@@ -33,6 +33,7 @@ import ListItem from '@material-ui/core/ListItem';
 
 import Delete from '@material-ui/icons/Delete';
 import Edit from '@material-ui/icons/Edit';
+import Print from '@material-ui/icons/Print';
 
 
 const styles = theme => ({
@@ -54,6 +55,9 @@ const styles = theme => ({
   },
   div_principal:{
     //position: 'relative',
+  },
+  div_app_bar:{
+    height: 80,
   },
 });
 
@@ -149,7 +153,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     //console.log(this.props.theme);
     return (
       <div className={this.props.classes.div_principal}>
-        <div className="div_1">
+        <div className={this.props.classes.div_app_bar}>
           <App_bar 
             buscar = {this.buscar} >
           </App_bar>
@@ -220,7 +224,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
 
 const styles_Tarjeta = theme => ({
   card: {
-    maxWidth: 200,
+    //maxWidth: 350,
     //background: theme.palette.primary.main,//'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
   },
   CardActions:{
@@ -228,6 +232,13 @@ const styles_Tarjeta = theme => ({
     alignItems: 'center',
     paddingLeft: theme.spacing.unit,
     width:'100%',
+  },
+  descripcion:{
+    height: '70px',
+    overflow: 'auto',
+  },
+  boton_imprimir:{
+    width:'50px',
   },
 });
 
@@ -239,6 +250,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     this.state = {
       open_editar: false,
       open_borrar: false,
+      open_print: false,
     };
     //this.state = { like: Boolean(this.props.like) };
     //this.handleLike = this.handleLike.bind(this);
@@ -351,27 +363,73 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     }
   }
 
+  handleClickOpenPrint = () => {
+    this.setState({ open_print: true });
+  };
+  handleClosePrint = () => {
+    this.setState({ open_print: false });
+  };
+  handleClick_Print = (event) => {
+    this.handleClickOpenPrint();
+  }
+  print_elemnto = (event) =>{
+    event.preventDefault()
+    this.fetchAsync_print(this.referencia_form_print);
+    this.handleClosePrint();
+  }
+  fetchAsync_print = async (form) => {
+    console.log(form.cantidad.value);
+    /*
+    let response = await fetch(`http://localhost:8080/api/sticker/update?codigo=${form.codigo.value}&descripcion=${form.descripcion.value}&_id=${this.props.id}`);
+    let status = response.status;
+    let data = await response.json();
+
+    //console.log(status);
+    //console.log(data.data.nModified);
+    if(status === 200 && data.data.nModified >= 1){
+      this.dialogo.titulo = 'Editar';
+      this.dialogo.mensaje = 'Se edito un elemento con exito';
+      this.dialogo.handleClickOpen();
+      this.props.lista_sticker.fetchAsync();
+    }else{
+      this.dialogo.titulo = 'Error';
+      this.dialogo.mensaje = 'Error al editar un elemento';
+      this.dialogo.handleClickOpen();
+      this.props.lista_sticker.fetchAsync();
+    }
+    */
+  }
+
   render() {
     return (
-      <div>
-        <Card className={this.props.classes.card}  >
+      <div>  
+        <Card className={this.props.classes.card} >
           <CardHeader
             title={this.props.codigo}
           />
           <CardContent>
-            <Typography component="p">
+            <Typography component="p" className={this.props.classes.descripcion}> 
               {this.props.descripcion}
             </Typography>
           </CardContent>
           
           <CardActions  >
             <div className={this.props.classes.CardActions}>
-              <IconButton aria-label="Borrar" onClick={this.handleClick_Delete}>
-                <Delete />
-              </IconButton>
-              <IconButton aria-label="Editar" onClick={this.handleClick_Edit}>
-                <Edit />
-              </IconButton>
+              <Tooltip title="Eliminar" >
+                <IconButton aria-label="Borrar" onClick={this.handleClick_Delete}>
+                  <Delete />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Modificar">
+                <IconButton aria-label="Editar" onClick={this.handleClick_Edit}>
+                  <Edit />
+                </IconButton>
+              </Tooltip>
+              <Tooltip title="Imprimir">
+                <IconButton aria-label="Imprimir" onClick={this.handleClick_Print}>
+                  <Print />
+                </IconButton>
+              </Tooltip>
             </div>
           </CardActions>
         </Card>
@@ -460,6 +518,53 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
           </DialogContent>
         </Dialog>
 
+        <Dialog
+          open={this.state.open_print}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+          fullWidth
+          >
+          <DialogTitle id="">Print</DialogTitle>
+          <DialogContent>
+            <DialogContentText >
+              Desea imprimir ?
+            </DialogContentText>
+            <form method="post" ref={e => this.referencia_form_print = e} onSubmit={this.print_elemnto}>
+              <List >
+                <ListItem >
+                  <label>
+                    {this.props.codigo}
+                  </label>
+                  </ListItem>
+                  <ListItem>
+                  <label>
+                    {this.props.descripcion}
+                  </label>
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="cantidad"
+                    label="Cantidad"
+                    type="text"
+                    fullWidth
+                    defaultValue={1}
+                    className={this.props.classes.boton_imprimir}
+                  />
+                </ListItem>
+              </List>
+              <DialogActions>
+                <Button onClick={this.handleClosePrint} color="primary">
+                  Cancelar
+                </Button>
+                <Button type="submit" color="primary">
+                  Imprimir
+                </Button>
+              </DialogActions>
+            </form>
+          </DialogContent>
+        </Dialog>
 
         <Dialogo ref={e => this.dialogo = e} />
       </div>
@@ -473,8 +578,9 @@ const styles_Lista_sticker = theme => ({
     overflow: 'hidden',
   },
   grid:{
-    minWidth: 150,
-    maxWidth: 200,
+    minWidth: 190,
+    //maxWidth: 350,
+    //width: 350,
   },
   centerBlockList:{
     width: '100%',
@@ -564,7 +670,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
             this.state.data.map((tike, i) => {
               //console.log(tike, i);
               return (
-                <Grid item xs={1} key={i} className={this.props.classes.grid}> 
+                <Grid item xs={2} key={i} className={this.props.classes.grid}> 
                   <Tarjeta 
                     //editar={this.editar('probando')}
                     codigo={tike.codigo}

@@ -78,35 +78,4 @@ export default class Example extends React.Component {
   }
 }
 
-
-//--------------------------------------------------------------------------------------------------
-/*
-          <TabContent activeTab={this.state.activeTab}>
-
-            <TabPane tabId="1">
-                <div>
-                  <Sticker_1/>
-                </div> 
-            </TabPane>
-
-            <TabPane tabId="2">
-              <Row>
-                <Col sm="12">
-                  <Sticker_1/>
-                  <h4>Tab 2 Contents</h4>
-                </Col>
-              </Row>
-            </TabPane>
-
-            <TabPane tabId="3">
-              <Row>
-                <Col sm="12">
-                  <h4>Tab 3 Contents</h4>
-                </Col>
-              </Row>
-            </TabPane>
-
-          </TabContent>*/
-
-
 export { App }
