@@ -378,26 +378,24 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     this.handleClosePrint();
   }
   fetchAsync_print = async (form) => {
-    console.log(form.cantidad.value);
-    /*
-    let response = await fetch(`http://localhost:8080/api/sticker/update?codigo=${form.codigo.value}&descripcion=${form.descripcion.value}&_id=${this.props.id}`);
+    //console.log(form.cantidad.value);
+    
+    let response = await fetch(`http://localhost:8080/api/sticker/print?quantity=${form.cantidad.value}&_id=${this.props.id}`);
     let status = response.status;
     let data = await response.json();
 
-    //console.log(status);
-    //console.log(data.data.nModified);
-    if(status === 200 && data.data.nModified >= 1){
-      this.dialogo.titulo = 'Editar';
-      this.dialogo.mensaje = 'Se edito un elemento con exito';
+    //console.log(data.success);
+    if(status === 200 && data.success){
+      this.dialogo.titulo = 'Imprimir';
+      this.dialogo.mensaje = 'Se imprimio un elemento con exito';
       this.dialogo.handleClickOpen();
       this.props.lista_sticker.fetchAsync();
     }else{
       this.dialogo.titulo = 'Error';
-      this.dialogo.mensaje = 'Error al editar un elemento';
+      this.dialogo.mensaje = 'Error al imprimir un elemento';
       this.dialogo.handleClickOpen();
       this.props.lista_sticker.fetchAsync();
     }
-    */
   }
 
   render() {
@@ -579,7 +577,7 @@ const styles_Lista_sticker = theme => ({
   },
   grid:{
     minWidth: 190,
-    //maxWidth: 350,
+    maxWidth: 200,
     //width: 350,
   },
   centerBlockList:{
