@@ -3,6 +3,7 @@
 import React from 'react';
 import './App.css';
 import Sticker_1 from './sticker_1/app';
+import Sticker_2 from './sticker_2/app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {blue, red, teal} from '@material-ui/core/colors';
 
@@ -64,12 +65,12 @@ export default class Example extends React.Component {
           <AppBar position="static">
             <Tabs value={value} onChange={this.handleChangeTab}>
               <Tab label="Sticker 1"></Tab>
-              <Tab label="Item Two" />
+              <Tab label="Sticker 2" />
               <Tab label="Item Three" />
             </Tabs>
           </AppBar>
           {value === 0 && <Sticker_1/>}
-          {value === 1 && <div>Item2<Sticker_1/></div>}
+          {value === 1 && <Sticker_2/>}
           {value === 2 && <div>Item 3</div>}
 
           
