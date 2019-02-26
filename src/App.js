@@ -64,9 +64,9 @@ export default class Example extends React.Component {
       <div style={{padding:'10px'}}>
           <AppBar position="static">
             <Tabs value={value} onChange={this.handleChangeTab}>
-              <Tab label="Sticker 1"></Tab>
-              <Tab label="Sticker 2" />
-              <Tab label="Item Three" />
+              <Tab label="Sticker 1 (Codigo, Descripcion)"></Tab>
+              <Tab label="Sticker 2 (Nombre, Descripcion)" />
+              {/* <Tab label="Item Three" /> */}
             </Tabs>
           </AppBar>
           {value === 0 && <Sticker_1/>}
