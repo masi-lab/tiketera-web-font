@@ -8,8 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import App_bar from './app_bar.js'
 import { withTheme } from '@material-ui/core/styles';
 
-
-import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -115,12 +113,12 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
    }).join('&')};
 
   fetchAsync_print_save = async (form) => {
-    let data_procesada = {'nombre':form.nombre.value, 'descripcion': form.descripcion.value, 'quantity':form.quantity.value}
+    let data_procesada = {'descripcion': form.descripcion.value, 'quantity':form.quantity.value}
     data_procesada = this.searchParams(data_procesada);
     
     //console.log(data_procesada);
     
-    let response = await fetch(`http://localhost:8080/api/sticker2/save_print`, {
+    let response = await fetch(`http://localhost:8080/api/sticker3/save_print`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -134,7 +132,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     let status = response.status;
     let data = await response.json();
 
-    if(status === 200 && (data.data.nombre || data.data.descripcion)){
+    if(status === 200 && data.data.descripcion){
       this.dialogo.titulo = 'Imprimir';
       this.dialogo.mensaje = 'Se imprimio y guardo un nuevo elemento con exito';
       this.dialogo.handleClickOpen();
@@ -145,41 +143,12 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
       this.dialogo.handleClickOpen();
       this.lista_sticker.fetchAsync();
     }
-
-  }
-
-  print_elemnto = (event) =>{
-    event.preventDefault()
-    this.fetchAsync_print(this.referencia_form);
-    this.handleClose();
-  }
-  
-  fetchAsync_print = async (form) => {
-    let data_procesada = {'nombre':form.nombre.value, 'descripcion': form.descripcion.value, 'quantity':form.quantity.value}
-    data_procesada = this.searchParams(data_procesada);
-    //console.log(data_procesada);
-    //console.log(`http://localhost:8080/api/sticker2/print?${data_procesada}`);
-    let response = await fetch(`http://localhost:8080/api/sticker2/print?${data_procesada}`);
-    let status = response.status;
-    let data = await response.json();
-
-    //console.log(data.success);
-    if(status === 200 && data.success){
-      this.dialogo.titulo = 'Imprimir';
-      this.dialogo.mensaje = 'Se imprimio un elemento con exito';
-      this.dialogo.handleClickOpen();
-      this.lista_sticker.fetchAsync();
-    }else{
-      this.dialogo.titulo = 'Error';
-      this.dialogo.mensaje = 'Error al imprimir un elemento';
-      this.dialogo.handleClickOpen();
-      this.lista_sticker.fetchAsync();
-    }
+    //console.log(status);
+    //console.log(data);
   }
 
   
   render() {
-    //console.log(this.props.theme);
     return (
       <div className={this.props.classes.div_principal}>
         <div className={this.props.classes.div_app_bar}>
@@ -205,24 +174,14 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
           aria-labelledby="form-dialog-title"
           fullWidth
         >
-          <DialogTitle id="form-dialog-title">Imprimir sticker 2</DialogTitle>
+          <DialogTitle id="form-dialog-title">Imprimir sticker 3</DialogTitle>
           <DialogContent>
             <DialogContentText >
-              Complete los campos e imprima formato de sticker 2
+              Complete los campos e imprima formato de sticker 3
             </DialogContentText>
             <form method="post" ref={e => this.referencia_form = e} onSubmit={this.agregar_nuevo_elemnto}>
               <List >
-                <ListItem >
-                  <TextField
-                    autoFocus
-                    margin="normal"
-                    id="nombre"
-                    label="nombre"
-                    type="text"
-                    fullWidth
-                  />
-                  </ListItem>
-                  <ListItem>
+                <ListItem>
                   <TextField
                     margin="normal"
                     id="descripcion"
@@ -235,7 +194,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                   <TextField
                     margin="normal"
                     id="quantity"
-                    label="quantity"
+                    label="cantidad"
                     type="text"
                     fullWidth
                   />
@@ -244,9 +203,6 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
               <DialogActions>
                 <Button onClick={this.handleClose} color="primary">
                   Cancelar
-                </Button>
-                <Button onClick={this.print_elemnto} color="primary">
-                  Imprimir
                 </Button>
                 <Button type="submit" color="primary">
                   Imprimir y guardar
@@ -312,7 +268,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     this.handleCloseDelete();
   }
   fetchAsync_delet = async (form) => {
-    let response = await fetch(`http://localhost:8080/api/sticker2/delete?_id=${this.props.id}`);
+    let response = await fetch(`http://localhost:8080/api/sticker3/delete?_id=${this.props.id}`);
     let status = response.status;
     //let data = await response.json();
 
@@ -348,7 +304,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
   fetchAsync_print = async (form) => {
     //console.log(form.cantidad.value);
     
-    let response = await fetch(`http://localhost:8080/api/sticker2/print?quantity=${form.cantidad.value}&nombre=${form.nombre.value}&descripcion=${form.descripcion.value}`);
+    let response = await fetch(`http://localhost:8080/api/sticker3/print?quantity=${form.cantidad.value}&descripcion=${form.descripcion.value}`);
     let status = response.status;
     let data = await response.json();
 
@@ -370,9 +326,6 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     return (
       <div>  
         <Card className={this.props.classes.card} >
-          <CardHeader
-            title={this.props.nombre}
-          />
           <CardContent>
             <Typography component="p" className={this.props.classes.descripcion}> 
               {this.props.descripcion}
@@ -408,12 +361,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
             </DialogContentText>
             <form method="post" ref={e => this.referencia_form_borrar = e} onSubmit={this.delete_elemnto}>
               <List >
-                <ListItem >
-                  <label>
-                    {this.props.nombre}
-                  </label>
-                  </ListItem>
-                  <ListItem>
+                <ListItem>
                   <label>
                     {this.props.descripcion}
                   </label>
@@ -444,17 +392,6 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
             </DialogContentText>
             <form method="post" ref={e => this.referencia_form_print = e} onSubmit={this.print_elemnto}>
               <List >
-                <ListItem >
-                  <TextField
-                    autoFocus
-                    margin="normal"
-                    id="nombre"
-                    label="nombre"
-                    type="text"
-                    fullWidth
-                    defaultValue={this.props.nombre}
-                  />
-                </ListItem>
                 <ListItem>
                   <TextField
                     margin="normal"
@@ -538,29 +475,18 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
   };
 
   fetchAsync = async (text_value='') => {
-    let nombre = '';
     let descripcion = '';
     let final = [];
     
     if(text_value===''){
-      let response = await fetch(`http://localhost:8080/api/sticker2/find?`);
+      let response = await fetch(`http://localhost:8080/api/sticker3/find?`);
       let data = await response.json();
       final = data.data;
       
     }else{
 
-      nombre = text_value;
-      descripcion = '';
-      // await response of fetch call
-      let response = await fetch(`http://localhost:8080/api/sticker2/find?nombre=${nombre}&descripcion=${descripcion}`);
-      // only proceed once promise is resolved
-      //console.log(response);
-      let data = await response.json();
-      final = data.data;
-
-      nombre = '';
       descripcion = text_value;
-      let response2 = await fetch(`http://localhost:8080/api/sticker2/find?nombre=${nombre}&descripcion=${descripcion}`);
+      let response2 = await fetch(`http://localhost:8080/api/sticker3/find?descripcion=${descripcion}`);
       let data2 = await response2.json();
       let var_control = false;
 
@@ -585,7 +511,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
   render() {
     return (<div className= {this.props.classes.centerBlockList}>
       <header>
-        <h1>Sticker 2</h1>
+        <h1>Sticker 3</h1>
         <i>Total: {this.state.data.length}</i>
       </header>
       <div className={this.props.classes.root}>
@@ -597,7 +523,6 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
                 <Grid item xs={2} key={i} className={this.props.classes.grid}> 
                   <Tarjeta 
                     //editar={this.editar('probando')}
-                    nombre={tike.nombre}
                     descripcion={tike.descripcion}
                     id={tike._id}
                     lista_sticker={this}
