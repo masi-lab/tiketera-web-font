@@ -235,7 +235,8 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                   <TextField
                     margin="normal"
                     id="quantity"
-                    label="quantity"
+                    //label="quantity"
+                    value="1"
                     type="text"
                     fullWidth
                   />
