@@ -195,7 +195,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                     margin="normal"
                     id="quantity"
                     //label="cantidad"
-                    value="1"
+                    defaultValue="1"
                     type="text"
                     fullWidth
                   />

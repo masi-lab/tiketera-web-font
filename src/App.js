@@ -5,6 +5,7 @@ import './App.css';
 import Sticker_1 from './sticker_1/app';
 import Sticker_2 from './sticker_2/app';
 import Sticker_3 from './sticker_3/app';
+import Sticker_4 from './sticker_4/app';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import {blue, red, teal} from '@material-ui/core/colors';
 
@@ -68,12 +69,14 @@ export default class Example extends React.Component {
               <Tab label="Sticker 1 (Codigo, Descripcion)"></Tab>
               <Tab label="Sticker 2 (Nombre, Descripcion)" />
               <Tab label="Sticker 3 (Descripcion)" />
+              <Tab label="Sticker 4 (Nodo nuevo)" />
               {/* <Tab label="Item Three" /> */}
             </Tabs>
           </AppBar>
           {value === 0 && <Sticker_1/>}
           {value === 1 && <Sticker_2/>}
           {value === 2 && <Sticker_3/>}
+          {value === 3 && <Sticker_4/>}
 
           
       </div>

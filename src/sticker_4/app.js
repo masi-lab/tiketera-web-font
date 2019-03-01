@@ -9,7 +9,6 @@ import App_bar from './app_bar.js'
 import { withTheme } from '@material-ui/core/styles';
 
 
-import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
@@ -32,7 +31,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 
 import Delete from '@material-ui/icons/Delete';
-import Edit from '@material-ui/icons/Edit';
 import Print from '@material-ui/icons/Print';
 
 
@@ -113,14 +111,21 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
    searchParams = (params) => { return Object.keys(params).map((key) => {
     return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
    }).join('&')};
-
+//etiqueta, numero_serie, ubicacion, fecha_alta, numero_equipo, ot, modelo
   fetchAsync_print_save = async (form) => {
-    let data_procesada = {'nombre':form.nombre.value, 'descripcion': form.descripcion.value, 'quantity':form.quantity.value}
+    let data_procesada = {'etiqueta':form.etiqueta.value, 
+                          'numero_serie': form.numero_serie.value,
+                          'ubicacion':form.ubicacion.value,
+                          'fecha_alta':form.fecha_alta.value,
+                          'numero_equipo':form.numero_equipo.value,
+                          'ot':form.ot.value,
+                          'modelo':form.modelo.value,
+                          'quantity':form.quantity.value}
     data_procesada = this.searchParams(data_procesada);
     
     //console.log(data_procesada);
     
-    let response = await fetch(`http://localhost:8080/api/sticker2/save_print`, {
+    let response = await fetch(`http://localhost:8080/api/sticker4/save_print`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -155,11 +160,16 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
   }
   
   fetchAsync_print = async (form) => {
-    let data_procesada = {'nombre':form.nombre.value, 'descripcion': form.descripcion.value, 'quantity':form.quantity.value}
+    let data_procesada = {'etiqueta':form.etiqueta.value, 
+                          'numero_serie': form.numero_serie.value,
+                          'ubicacion':form.ubicacion.value,
+                          'fecha_alta':form.fecha_alta.value,
+                          'numero_equipo':form.numero_equipo.value,
+                          'ot':form.ot.value,
+                          'modelo':form.modelo.value,
+                          'quantity':form.quantity.value}
     data_procesada = this.searchParams(data_procesada);
-    //console.log(data_procesada);
-    //console.log(`http://localhost:8080/api/sticker2/print?${data_procesada}`);
-    let response = await fetch(`http://localhost:8080/api/sticker2/print?${data_procesada}`);
+    let response = await fetch(`http://localhost:8080/api/sticker4/print?${data_procesada}`);
     let status = response.status;
     let data = await response.json();
 
@@ -216,17 +226,65 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                   <TextField
                     autoFocus
                     margin="normal"
-                    id="nombre"
-                    label="nombre"
+                    id="etiqueta"
+                    label="etiqueta"
                     type="text"
                     fullWidth
                   />
-                  </ListItem>
-                  <ListItem>
+                </ListItem>
+                <ListItem> 
                   <TextField
                     margin="normal"
-                    id="descripcion"
-                    label="descripcion"
+                    id="numero_serie"
+                    label="numero_serie"
+                    type="text"
+                    fullWidth
+                  />
+                </ListItem>
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="ubicacion"
+                    label="ubicacion"
+                    type="text"
+                    fullWidth
+                  />
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    margin="normal"
+                    id="fecha_alta"
+                    label="fecha_alta"
+                    type="text"
+                    fullWidth
+                  />
+                </ListItem>
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="numero_equipo"
+                    label="numero_equipo"
+                    type="text"
+                    fullWidth
+                  />
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    margin="normal"
+                    id="ot"
+                    label="ot"
+                    type="text"
+                    fullWidth
+                  />
+                </ListItem>
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="modelo"
+                    label="modelo"
                     type="text"
                     fullWidth
                   />
@@ -235,8 +293,7 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                   <TextField
                     margin="normal"
                     id="quantity"
-                    //label="quantity"
-                    defaultValue="1"
+                    defaultValue="5"
                     type="text"
                     fullWidth
                   />
@@ -277,8 +334,8 @@ const styles_Tarjeta = theme => ({
     width:'100%',
   },
   descripcion:{
-    height: '70px',
-    overflow: 'auto',
+    height: '40px',
+    //overflow: 'auto',
   },
   boton_imprimir:{
     width:'50px',
@@ -313,7 +370,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     this.handleCloseDelete();
   }
   fetchAsync_delet = async (form) => {
-    let response = await fetch(`http://localhost:8080/api/sticker2/delete?_id=${this.props.id}`);
+    let response = await fetch(`http://localhost:8080/api/sticker4/delete?_id=${this.props.id}`);
     let status = response.status;
     //let data = await response.json();
 
@@ -348,8 +405,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
   }
   fetchAsync_print = async (form) => {
     //console.log(form.cantidad.value);
-    
-    let response = await fetch(`http://localhost:8080/api/sticker2/print?quantity=${form.cantidad.value}&nombre=${form.nombre.value}&descripcion=${form.descripcion.value}`);
+    let response = await fetch(`http://localhost:8080/api/sticker4/print?quantity=${form.cantidad.value}&etiqueta=${form.etiqueta.value}&numero_serie=${form.numero_serie.value}&ubicacion=${form.ubicacion.value}&fecha_alta=${form.fecha_alta.value}&numero_equipo=${form.numero_equipo.value}&ot=${form.ot.value}&modelo=${form.modelo.value}`);
     let status = response.status;
     let data = await response.json();
 
@@ -372,11 +428,26 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
       <div>  
         <Card className={this.props.classes.card} >
           <CardHeader
-            title={this.props.nombre}
+            title={this.props.etiqueta}
           />
           <CardContent>
             <Typography component="p" className={this.props.classes.descripcion}> 
-              {this.props.descripcion}
+              {this.props.numero_serie}
+            </Typography>
+            <Typography component="p" className={this.props.classes.descripcion}> 
+              {this.props.ubicacion}
+            </Typography>
+            <Typography component="p" className={this.props.classes.descripcion}> 
+              {this.props.fecha_alta}
+            </Typography>
+            <Typography component="p" className={this.props.classes.descripcion}> 
+              {this.props.numero_equipo}
+            </Typography>
+            <Typography component="p" className={this.props.classes.descripcion}> 
+              {this.props.ot}
+            </Typography>
+            <Typography component="p" className={this.props.classes.descripcion}> 
+              {this.props.modelo}
             </Typography>
           </CardContent>
           
@@ -409,14 +480,39 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
             </DialogContentText>
             <form method="post" ref={e => this.referencia_form_borrar = e} onSubmit={this.delete_elemnto}>
               <List >
+              <ListItem >
+                  <label>
+                    {this.props.etiqueta}
+                  </label>
+                </ListItem>
+                <ListItem> 
+                  <label>
+                    {this.props.numero_serie}
+                  </label>
+                </ListItem>
                 <ListItem >
                   <label>
-                    {this.props.nombre}
+                    {this.props.ubicacion}
                   </label>
-                  </ListItem>
-                  <ListItem>
+                </ListItem>
+                <ListItem>
                   <label>
-                    {this.props.descripcion}
+                    {this.props.fecha_alta}
+                  </label>
+                </ListItem>
+                <ListItem >
+                  <label>
+                    {this.props.numero_equipo}
+                  </label>
+                </ListItem>
+                <ListItem>
+                  <label>
+                    {this.props.ot}
+                  </label>
+                </ListItem>
+                <ListItem >
+                  <label>
+                    {this.props.modelo}
                   </label>
                 </ListItem>
               </List>
@@ -445,25 +541,78 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
             </DialogContentText>
             <form method="post" ref={e => this.referencia_form_print = e} onSubmit={this.print_elemnto}>
               <List >
+              <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="etiqueta"
+                    label="etiqueta"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.etiqueta}
+                  />
+                </ListItem>
+                <ListItem> 
+                  <TextField
+                    margin="normal"
+                    id="numero_serie"
+                    label="numero_serie"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.numero_serie}
+                  />
+                </ListItem>
                 <ListItem >
                   <TextField
                     autoFocus
                     margin="normal"
-                    id="nombre"
-                    label="nombre"
+                    id="ubicacion"
+                    label="ubicacion"
                     type="text"
                     fullWidth
-                    defaultValue={this.props.nombre}
+                    defaultValue={this.props.ubicacion}
                   />
                 </ListItem>
                 <ListItem>
                   <TextField
                     margin="normal"
-                    id="descripcion"
-                    label="descripcion"
+                    id="fecha_alta"
+                    label="fecha_alta"
                     type="text"
                     fullWidth
-                    defaultValue={this.props.descripcion}
+                    defaultValue={this.props.fecha_alta}
+                  />
+                </ListItem>
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="numero_equipo"
+                    label="numero_equipo"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.numero_equipo}
+                  />
+                </ListItem>
+                <ListItem>
+                  <TextField
+                    margin="normal"
+                    id="ot"
+                    label="ot"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.ot}
+                  />
+                </ListItem>
+                <ListItem >
+                  <TextField
+                    autoFocus
+                    margin="normal"
+                    id="modelo"
+                    label="modelo"
+                    type="text"
+                    fullWidth
+                    defaultValue={this.props.modelo}
                   />
                 </ListItem>
                 <ListItem>
@@ -474,7 +623,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
                     label="Cantidad"
                     type="text"
                     fullWidth
-                    defaultValue={1}
+                    defaultValue={5}
                     className={this.props.classes.boton_imprimir}
                   />
                 </ListItem>
@@ -503,8 +652,8 @@ const styles_Lista_sticker = theme => ({
     overflow: 'hidden',
   },
   grid:{
-    minWidth: 190,
-    maxWidth: 200,
+    minWidth: 270,
+    maxWidth: 280,
     //width: 350,
   },
   centerBlockList:{
@@ -538,41 +687,115 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
     data: [],
   };
 
-  fetchAsync = async (text_value='') => {
-    let nombre = '';
-    let descripcion = '';
+  fetchAsync = async (text_value = '') => {
+    var etiqueta = '', numero_serie = '', ubicacion = '', fecha_alta = '', numero_equipo = '', ot = '', modelo = '';
     let final = [];
     
     if(text_value===''){
-      let response = await fetch(`http://localhost:8080/api/sticker2/find?`);
+      let response = await fetch(`http://localhost:8080/api/sticker4/find?`);
       let data = await response.json();
       final = data.data;
       
     }else{
-
-      nombre = text_value;
-      descripcion = '';
-      // await response of fetch call
-      let response = await fetch(`http://localhost:8080/api/sticker2/find?nombre=${nombre}&descripcion=${descripcion}`);
-      // only proceed once promise is resolved
-      //console.log(response);
+      etiqueta = text_value;
+      let response = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
       let data = await response.json();
       final = data.data;
 
-      nombre = '';
-      descripcion = text_value;
-      let response2 = await fetch(`http://localhost:8080/api/sticker2/find?nombre=${nombre}&descripcion=${descripcion}`);
+      etiqueta = '';
+      numero_serie = text_value;
+      let response2 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
       let data2 = await response2.json();
-      let var_control = false;
 
+      numero_serie = '';
+      ubicacion = text_value;
+      let response3 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let data3 = await response3.json();
+
+      ubicacion = '';
+      fecha_alta = text_value;
+      let response4 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let data4 = await response4.json();
+
+      fecha_alta = '';
+      numero_equipo = text_value;
+      let response5 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let data5 = await response5.json();
+
+      numero_equipo = '';
+      ot = text_value;
+      let response6 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let data6 = await response6.json();
+
+      ot = '';
+      modelo = text_value;
+      let response7 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let data7 = await response7.json();
+
+      var var_control = false;
       data2.data.map(function (tike, i) {
         var_control = false;
         final.map(function(item,x){
           if(tike._id === item._id){var_control=true;}
-          return ''; // Esto lo pongo para no me tire un warning
+          return '';
         })
         if(!var_control){final.push(tike);}
-        return ''; // Esto lo pongo para no me tire un warning
+        return '';
+      });
+
+      var_control = false;
+      data3.data.map(function (tike, i) {
+        var_control = false;
+        final.map(function(item,x){
+          if(tike._id === item._id){var_control=true;}
+          return '';
+        })
+        if(!var_control){final.push(tike);}
+        return '';
+      });
+
+      var_control = false;
+      data4.data.map(function (tike, i) {
+        var_control = false;
+        final.map(function(item,x){
+          if(tike._id === item._id){var_control=true;}
+          return '';
+        })
+        if(!var_control){final.push(tike);}
+        return '';
+      });
+
+      var_control = false;
+      data5.data.map(function (tike, i) {
+        var_control = false;
+        final.map(function(item,x){
+          if(tike._id === item._id){var_control=true;}
+          return '';
+        })
+        if(!var_control){final.push(tike);}
+        return '';
+      });
+
+      var_control = false;
+      data6.data.map(function (tike, i) {
+        var_control = false;
+        final.map(function(item,x){
+          if(tike._id === item._id){var_control=true;}
+          return '';
+        })
+        if(!var_control){final.push(tike);}
+        return '';
+      });
+
+      var_control = false;
+      data7.data.map(function (tike, i) {
+        var_control = false;
+        final.map(function(item,x){
+          if(tike._id === item._id){var_control=true;}
+          return '';
+        })
+        if(!var_control){final.push(tike);}
+        return '';
       });
     }
 
@@ -582,7 +805,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
   }
 
   //editar = (algo)=>{console.log(algo)}
-
+  
   render() {
     return (<div className= {this.props.classes.centerBlockList}>
       <header>
@@ -593,13 +816,19 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
         <Grid  container spacing={16}  alignContent="center" className={this.props.classes.grid_container}>  
           {
             this.state.data.map((tike, i) => {
-              //console.log(tike, i);
+              //console.log(tike);
+              //console.log(i);
               return (
                 <Grid item xs={2} key={i} className={this.props.classes.grid}> 
                   <Tarjeta 
                     //editar={this.editar('probando')}
-                    nombre={tike.nombre}
-                    descripcion={tike.descripcion}
+                    etiqueta={tike.etiqueta}
+                    numero_serie={tike.numero_serie}
+                    ubicacion={tike.ubicacion}
+                    fecha_alta={tike.fecha_alta}
+                    numero_equipo={tike.numero_equipo}
+                    ot={tike.ot}
+                    modelo={tike.modelo}
                     id={tike._id}
                     lista_sticker={this}
                   >
