@@ -1,0 +1,37 @@
+.boton_cabecera{
+  margin: 10px;
+  padding: 0px 20px 0px 0px;
+  height: 40px;
+  }
+.pading_10{
+  padding: 10px;
+}
+
+.root {
+  padding: '2px 4px';
+  display: 'flex';
+  align-items: 'center';
+}
+.input {
+  margin-left: 8;
+  flex: 1;
+}
+.iconButton {
+  padding: 10;
+}
+.app_bar_div {
+  padding: '50px';
+  margin: '50px';
+}
+
+.color_rojo{
+  background-color: red;
+}
+
+
+.absolute_agregar {
+  position: 'absolute';
+  bottom: 8;
+  right: 8;
+  background-color: blue;
+}

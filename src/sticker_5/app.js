@@ -111,21 +111,18 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
    searchParams = (params) => { return Object.keys(params).map((key) => {
     return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
    }).join('&')};
-//etiqueta, numero_serie, ubicacion, fecha_alta, numero_equipo, ot, modelo
   fetchAsync_print_save = async (form) => {
     let data_procesada = {'etiqueta':form.etiqueta.value, 
                           'numero_serie': form.numero_serie.value,
                           'ubicacion':form.ubicacion.value,
-                          'fecha_alta':form.fecha_alta.value,
                           'numero_equipo':form.numero_equipo.value,
-                          'ot':form.ot.value,
                           'modelo':form.modelo.value,
                           'quantity':form.quantity.value}
     data_procesada = this.searchParams(data_procesada);
     
     //console.log(data_procesada);
     
-    let response = await fetch(`http://localhost:8080/api/sticker4/save_print`, {
+    let response = await fetch(`http://localhost:8080/api/sticker5/save_print`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -134,12 +131,12 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     });
     
     //console.log(response);
-
-    
+  
     let status = response.status;
     let data = await response.json();
+    //console.log(data);
 
-    if(status === 200 && data.success){
+    if(status === 200){
       this.dialogo.titulo = 'Imprimir';
       this.dialogo.mensaje = 'Se imprimio y guardo un nuevo elemento con exito';
       this.dialogo.handleClickOpen();
@@ -163,13 +160,11 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
     let data_procesada = {'etiqueta':form.etiqueta.value, 
                           'numero_serie': form.numero_serie.value,
                           'ubicacion':form.ubicacion.value,
-                          'fecha_alta':form.fecha_alta.value,
                           'numero_equipo':form.numero_equipo.value,
-                          'ot':form.ot.value,
                           'modelo':form.modelo.value,
                           'quantity':form.quantity.value}
     data_procesada = this.searchParams(data_procesada);
-    let response = await fetch(`http://localhost:8080/api/sticker4/print?${data_procesada}`);
+    let response = await fetch(`http://localhost:8080/api/sticker5/print?${data_procesada}`);
     let status = response.status;
     let data = await response.json();
 
@@ -251,30 +246,12 @@ const Sticker_1 = withTheme()(withStyles(styles)( class  extends React.Component
                     fullWidth
                   />
                 </ListItem>
-                <ListItem>
-                  <TextField
-                    margin="normal"
-                    id="fecha_alta"
-                    label="fecha_alta"
-                    type="text"
-                    fullWidth
-                  />
-                </ListItem>
                 <ListItem >
                   <TextField
                     autoFocus
                     margin="normal"
                     id="numero_equipo"
                     label="numero_equipo"
-                    type="text"
-                    fullWidth
-                  />
-                </ListItem>
-                <ListItem>
-                  <TextField
-                    margin="normal"
-                    id="ot"
-                    label="ot"
                     type="text"
                     fullWidth
                   />
@@ -370,7 +347,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
     this.handleCloseDelete();
   }
   fetchAsync_delet = async (form) => {
-    let response = await fetch(`http://localhost:8080/api/sticker4/delete?_id=${this.props.id}`);
+    let response = await fetch(`http://localhost:8080/api/sticker5/delete?_id=${this.props.id}`);
     let status = response.status;
     //let data = await response.json();
 
@@ -405,7 +382,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
   }
   fetchAsync_print = async (form) => {
     //console.log(form.cantidad.value);
-    let response = await fetch(`http://localhost:8080/api/sticker4/print?quantity=${form.cantidad.value}&etiqueta=${form.etiqueta.value}&numero_serie=${form.numero_serie.value}&ubicacion=${form.ubicacion.value}&fecha_alta=${form.fecha_alta.value}&numero_equipo=${form.numero_equipo.value}&ot=${form.ot.value}&modelo=${form.modelo.value}`);
+    let response = await fetch(`http://localhost:8080/api/sticker5/print?quantity=${form.cantidad.value}&etiqueta=${form.etiqueta.value}&numero_serie=${form.numero_serie.value}&ubicacion=${form.ubicacion.value}&numero_equipo=${form.numero_equipo.value}&modelo=${form.modelo.value}`);
     let status = response.status;
     let data = await response.json();
 
@@ -438,13 +415,7 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
               {this.props.ubicacion}
             </Typography>
             <Typography component="p" className={this.props.classes.descripcion}> 
-              {this.props.fecha_alta}
-            </Typography>
-            <Typography component="p" className={this.props.classes.descripcion}> 
               {this.props.numero_equipo}
-            </Typography>
-            <Typography component="p" className={this.props.classes.descripcion}> 
-              {this.props.ot}
             </Typography>
             <Typography component="p" className={this.props.classes.descripcion}> 
               {this.props.modelo}
@@ -495,19 +466,9 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
                     {this.props.ubicacion}
                   </label>
                 </ListItem>
-                <ListItem>
-                  <label>
-                    {this.props.fecha_alta}
-                  </label>
-                </ListItem>
                 <ListItem >
                   <label>
                     {this.props.numero_equipo}
-                  </label>
-                </ListItem>
-                <ListItem>
-                  <label>
-                    {this.props.ot}
                   </label>
                 </ListItem>
                 <ListItem >
@@ -573,16 +534,6 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
                     defaultValue={this.props.ubicacion}
                   />
                 </ListItem>
-                <ListItem>
-                  <TextField
-                    margin="normal"
-                    id="fecha_alta"
-                    label="fecha_alta"
-                    type="text"
-                    fullWidth
-                    defaultValue={this.props.fecha_alta}
-                  />
-                </ListItem>
                 <ListItem >
                   <TextField
                     autoFocus
@@ -592,16 +543,6 @@ const Tarjeta = withTheme()(withStyles(styles_Tarjeta)( class  extends React.Com
                     type="text"
                     fullWidth
                     defaultValue={this.props.numero_equipo}
-                  />
-                </ListItem>
-                <ListItem>
-                  <TextField
-                    margin="normal"
-                    id="ot"
-                    label="ot"
-                    type="text"
-                    fullWidth
-                    defaultValue={this.props.ot}
                   />
                 </ListItem>
                 <ListItem >
@@ -688,48 +629,38 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
   };
 
   fetchAsync = async (text_value = '') => {
-    var etiqueta = '', numero_serie = '', ubicacion = '', fecha_alta = '', numero_equipo = '', ot = '', modelo = '';
+    var etiqueta = '', numero_serie = '', ubicacion = '', numero_equipo = '', modelo = '';
     let final = [];
     
     if(text_value===''){
-      let response = await fetch(`http://localhost:8080/api/sticker4/find?`);
+      let response = await fetch(`http://localhost:8080/api/sticker5/find?`);
       let data = await response.json();
       final = data.data;
       
     }else{
       etiqueta = text_value;
-      let response = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let response = await fetch(`http://localhost:8080/api/sticker5/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&numero_equipo=${numero_equipo}&modelo=${modelo}`);
       let data = await response.json();
       final = data.data;
 
       etiqueta = '';
       numero_serie = text_value;
-      let response2 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let response2 = await fetch(`http://localhost:8080/api/sticker5/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&numero_equipo=${numero_equipo}&modelo=${modelo}`);
       let data2 = await response2.json();
 
       numero_serie = '';
       ubicacion = text_value;
-      let response3 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let response3 = await fetch(`http://localhost:8080/api/sticker5/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&numero_equipo=${numero_equipo}&modelo=${modelo}`);
       let data3 = await response3.json();
 
       ubicacion = '';
-      fecha_alta = text_value;
-      let response4 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
-      let data4 = await response4.json();
-
-      fecha_alta = '';
       numero_equipo = text_value;
-      let response5 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let response5 = await fetch(`http://localhost:8080/api/sticker5/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&numero_equipo=${numero_equipo}&modelo=${modelo}`);
       let data5 = await response5.json();
 
       numero_equipo = '';
-      ot = text_value;
-      let response6 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
-      let data6 = await response6.json();
-
-      ot = '';
       modelo = text_value;
-      let response7 = await fetch(`http://localhost:8080/api/sticker4/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&fecha_alta=${fecha_alta}&numero_equipo=${numero_equipo}&ot=${ot}&modelo=${modelo}`);
+      let response7 = await fetch(`http://localhost:8080/api/sticker5/find?etiqueta=${etiqueta}&numero_serie=${numero_serie}&ubicacion=${ubicacion}&numero_equipo=${numero_equipo}&modelo=${modelo}`);
       let data7 = await response7.json();
 
       var var_control = false;
@@ -755,29 +686,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
       });
 
       var_control = false;
-      data4.data.map(function (tike, i) {
-        var_control = false;
-        final.map(function(item,x){
-          if(tike._id === item._id){var_control=true;}
-          return '';
-        })
-        if(!var_control){final.push(tike);}
-        return '';
-      });
-
-      var_control = false;
       data5.data.map(function (tike, i) {
-        var_control = false;
-        final.map(function(item,x){
-          if(tike._id === item._id){var_control=true;}
-          return '';
-        })
-        if(!var_control){final.push(tike);}
-        return '';
-      });
-
-      var_control = false;
-      data6.data.map(function (tike, i) {
         var_control = false;
         final.map(function(item,x){
           if(tike._id === item._id){var_control=true;}
@@ -825,9 +734,7 @@ let Lista_sticker = withTheme()(withStyles(styles_Lista_sticker)( class  extends
                     etiqueta={tike.etiqueta}
                     numero_serie={tike.numero_serie}
                     ubicacion={tike.ubicacion}
-                    fecha_alta={tike.fecha_alta}
                     numero_equipo={tike.numero_equipo}
-                    ot={tike.ot}
                     modelo={tike.modelo}
                     id={tike._id}
                     lista_sticker={this}
